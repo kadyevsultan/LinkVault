@@ -1,0 +1,144 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100%; /* Устанавливаем высоту для html и body */
+    padding: 0;
+    background-color: #121212; /* Темный фон */
+    color: #e0e0e0; /* Светлый текст */
+}
+
+.wrapper {
+    display: flex; /* Используем Flexbox */
+    flex-direction: column; /* Вертикальное расположение */
+    min-height: 100vh; /* Минимальная высота 100% от высоты экрана */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1e1e1e; /* Темный фон для хедера */
+    color: white;
+    padding: 10px 20px;
+    padding: 0 12%; /* Отступы по бокам */
+}
+
+.logo h1 {
+    margin: 0;
+}
+
+.logo a {
+    text-decoration: none;
+    color: white;
+}
+
+.logo:hover {
+    transform: scale(1.1); /* Увеличение изображения при наведении */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 15px;
+    position: relative; /* Устанавливаем относительное позиционирование для li */
+}
+
+nav a {
+    color: #e0e0e0; /* Светлый текст для ссылок */
+    text-decoration: none; /* Убираем стандартное подчеркивание */
+    padding: 5px 0; /* Добавляем отступы сверху и снизу для ссылки */
+}
+
+nav a::after {
+    content: ""; /* Создаем пустой контент для псевдоэлемента */
+    display: block; /* Делаем его блочным элементом */
+    width: 100%; /* Ширина равна ширине ссылки */
+    height: 2px; /* Высота подчеркивания */
+    background: #28a745; /* Цвет подчеркивания */
+    transform: scaleX(0); /* Начальное состояние: скрыто */
+    transition: transform 0.3s ease; /* Плавный переход для анимации */
+    position: absolute; /* Абсолютное позиционирование */
+    left: 0; /* Выравнивание по левому краю */
+    bottom: 0; /* Выравнивание по нижнему краю */
+}
+
+nav a:hover::after {
+    transform: scaleX(1); /* При наведении: показываем подчеркивание */
+}
+
+.login-icon {
+    display: flex; /* Используем flex для выравнивания иконок */
+    align-items: center; /* Центрируем иконки по вертикали */
+}
+
+.icon-link {
+    display: flex; /* Используем flex для выравнивания иконок */
+    align-items: center; /* Центрируем иконки по вертикали */
+    text-decoration: none; /* Убираем подчеркивание */
+    color: #e0e0e0; /* Цвет текста для ссылок */
+    margin-left: 10px; /* Отступ между иконками */
+}
+
+.login-icon-img,
+.logout-icon-img {
+    width: 24px; /* Ширина иконок */
+    height: 24px; /* Высота иконок */
+    transition: transform 0.3s; /* Плавный переход для эффекта при наведении */
+}
+
+.icon-link:hover .login-icon-img,
+.icon-link:hover .logout-icon-img {
+    transform: scale(1.1); /* Увеличение иконок при наведении */
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background: #1e1e1e; /* Темный фон для футера */
+    color: white;
+}
+
+main {
+    padding: 0 12%; /* Отступы по бокам */
+    flex: 1;
+}
+
+.messages {
+    margin: 20px 0; /* Отступ сверху и снизу */
+}
+
+.alert {
+    padding: 15px; /* Внутренние отступы */
+    border-radius: 4px; /* Закругленные углы */
+    margin-bottom: 10px; /* Отступ между сообщениями */
+    font-size: 16px; /* Размер шрифта */
+}
+
+.alert-success {
+    background-color: #d4edda; /* Светло-зеленый фон для успешных сообщений */
+    color: #155724; /* Темно-зеленый цвет текста */
+    border: 1px solid #c3e6cb; /* Зеленая рамка */
+}
+
+.alert-error {
+    background-color: #f8d7da; /* Светло-красный фон для ошибок */
+    color: #721c24; /* Темно-красный цвет текста */
+    border: 1px solid #f5c6cb; /* Красная рамка */
+}
+
+.alert-warning {
+    background-color: #fff3cd; /* Светло-желтый фон для предупреждений */
+    color: #856404; /* Темно-желтый цвет текста */
+    border: 1px solid #ffeeba; /* Желтая рамка */
+}
+
+.alert-info {
+    background-color: #d1ecf1; /* Светло-голубой фон для информационных сообщений */
+    color: #0c5460; /* Темно-голубой цвет текста */
+    border: 1px solid #bee5eb; /* Голубая рамка */
+}

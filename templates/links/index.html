@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'links/css/index.css' %}">
+{% endblock style %}
+
+{% block content %}
+<div class="container">
+            
+    <div class="welcome-section">
+        <h2>Добро пожаловать в LinkVault!</h2>
+        <p>Сохраняйте и управляйте своими закладками легко и удобно. Создавайте категории, добавляйте закладки и делитесь ими с друзьями.</p>
+        <a href="{% url 'accounts:register' %}" class="register-button">Нет аккаунта? Зарегистрируйся!</a> <!-- Кнопка регистрации -->
+        <a href="{% url 'accounts:login' %}" class="register-button">Уже есть аккаунт? Вход</a> <!-- Кнопка входа -->
+    </div>
+
+    <div class="section bookmarks">
+        <h2>Последние добавленные закладки</h2>
+        <div class="bookmark-list">
+            {% for link in last_links %}
+                <div class="bookmark-item">
+                    <a href="{{ link.link }}" target='_blank'>
+                        <img src="{{ link.favicon_image.url }}" alt="Иконка закладки">
+                    </a>
+                    <div class="bookmark-info">
+                        <h3><a href="{{ link.link }}" target='_blank'>{{ link.name|slice:":10" }}{% if link.name|length > 10 %}...{% endif %}</a></h3>
+                    </div>
+                    <br>
+                    <span class="dots"><a href='{% url "links:detail-link" link.id %}'>•••</a></span>
+                </div>
+            {% empty %}
+                <p>Пока нет добавленных закладок.</p>
+            {% endfor %}
+        </div>
+        <div class="add-button"><a href="{% url 'links:add-link' %}">+</a></div>
+    </div>
+    <div class="section categories">
+        <h2>Последние добавленные категории</h2>
+        <div class="category-list">
+            <div class="category-item">
+                <img src="{% static 'links/img/category.png' %}" alt="Категория">
+                <div class="category-info">
+                    <h3>Категория 1</h3>
+                </div>
+            </div>
+        </div>
+        <div class="add-button">+</div>
+    </div>
+</div>
+{% endblock content %}

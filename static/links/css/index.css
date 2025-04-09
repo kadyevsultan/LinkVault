@@ -1,0 +1,167 @@
+.container {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение секций */
+    margin: 20px;
+}
+
+.section {
+    background: #1e1e1e; /* Темный фон для секций */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    margin-bottom: 20px; /* Отступ между секциями */
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.welcome-section {
+    text-align: center; /* Центрирование текста */
+    margin: 40px 0; /* Отступы сверху и снизу */
+    padding: 30px; /* Внутренние отступы */
+    background: #1e1e1e; /* Темный фон для секции */
+    border-radius: 10px; /* Закругление углов */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Тень для секции */
+}
+
+.welcome-section h2 {
+    margin: 0 0 15px; /* Отступы для заголовка */
+    color: #e0e0e0; /* Цвет текста заголовка */
+    font-size: 24px; /* Размер шрифта заголовка */
+}
+
+.welcome-section p {
+    margin: 0 0 25px; /* Отступы для описания */
+    color: #b0b0b0; /* Цвет текста описания */
+    font-size: 16px; /* Размер шрифта описания */
+}
+
+.register-button {
+    display: inline-block; /* Отображение как блочный элемент */
+    padding: 12px 25px; /* Внутренние отступы */
+    background: #28a745; /* Зеленый фон для кнопки регистрации */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Закругление углов кнопки */
+    text-decoration: none; /* Убираем подчеркивание */
+    font-size: 16px; /* Размер шрифта */
+    margin: 5px; /* Отступы между кнопками */
+    transition: background 0.3s, transform 0.3s; /* Плавный переход для фона и трансформации */
+}
+
+.register-button:hover {
+    background: #218838; /* Темный зеленый при наведении */
+    transform: scale(1.05); /* Увеличение кнопки при наведении */
+}
+
+.bookmark-list {
+    display: flex;
+    flex-wrap: wrap; /* Позволяет закладкам переноситься на следующую строку */
+}
+
+.bookmark-item {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение */
+    align-items: center; /* Центрирование содержимого */
+    background: #2a2a2a; /* Фон для каждой закладки */
+    border-radius: 5px;
+    padding: 8px; /* Отступ внутри блока */
+    margin: 8px; /* Отступ между блоками */
+    width: calc(20% - 32px); /* Ширина закладки с учетом отступов */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.bookmark-item img {
+    margin-bottom: 10px; /* Отступ между иконкой и текстом */
+    border-radius: 5px; /* Закругление иконки */
+    width: 40px; /* Ширина иконки */
+    height: 40px; /* Высота иконки */
+}
+
+.bookmark-info {
+    text-align: center; /* Центрирование текста */
+}
+
+.bookmark-info h3 {
+    margin: 0;
+}
+
+.bookmark-info a {
+    color: #e0e0e0; /* Цвет текста ссылки */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+.bookmark-info a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+.dots {
+    opacity: 0; /* Начальная прозрачность */
+    transition: opacity 0.3s ease; /* Плавный переход */
+}
+
+.dots a {
+    text-decoration: none;
+    color: white;
+}
+
+.bookmark-item:hover .dots {
+    opacity: 1; /* Полная видимость при наведении */
+}
+
+.category-list {
+    display: flex;
+    flex-wrap: wrap; /* Позволяет категориям переноситься на следующую строку */
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение */
+    align-items: center; /* Центрирование содержимого */
+    background: #2a2a2a; /* Фон для каждой категории */
+    border-radius: 5px;
+    padding: 8px; /* Уменьшенный отступ */
+    margin: 8px; /* Уменьшенный отступ */
+    width: calc(20% - 32px); /* Уменьшенная ширина категории */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.category-item img {
+    margin-bottom: 10px; /* Отступ между иконкой и текстом */
+    border-radius: 5px; /* Закругление иконки */
+    width: 40px; /* Ширина иконки */
+    height: 40px; /* Высота иконки */
+}
+
+.category-info {
+    text-align: center; /* Центрирование текста */
+}
+
+.category-info h3 {
+    margin: 0;
+}
+
+.add-button {
+    background: #28a745; /* Зеленый фон для кнопки добавления */
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s;
+}
+
+.add-button a {
+    color: white;
+    text-decoration: none;
+}
+
+.add-button:hover {
+    background: #218838; /* Темный зеленый при наведении */
+}

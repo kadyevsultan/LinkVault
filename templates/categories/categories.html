@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'categories/css/categories.css' %}">
+{% endblock style %}
+
+{% block content %}
+<div class="container">
+    <div class="section categories">
+        <h2>Категории</h2>
+        
+        {% if categories %}
+            <div class="category-list">
+                {% for category in categories %}
+                    <div class="category-item">
+                        <a href="">
+                            {% if category.image %}
+                                <img src="{{ category.image.url }}" alt="Иконка категории">
+                            {% endif %}
+                            <div class="category-info">
+                                <h3>{{ category.name }}</h3>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="add-button"><a href="{% url 'links:add-category' %}">+</a></div>
+        {% else %}
+            <div class="add-category-button">
+                <a href="{% url 'links:add-category' %}" class="plus-button">+</a>
+            </div>
+            <p>У вас пока нет категорий.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'links/css/add-link.css' %}">
+{% endblock style %}
+
+
+{% block content %}
+
+<div class="container">
+    <h2>Добавить ссылку</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_name">Название</label>
+            {{ form.name }}
+        </div>
+        <div class="form-group">
+            <label for="id_link">Ссылка</label>
+            {{ form.link }}
+        </div>
+        <div class="form-group">
+            <label for="id_description">Описание</label>
+            {{ form.description }}
+        </div>
+        <button type="submit" class="custom-button">Сохранить</button>
+    </form>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'categories/css/add-category.css' %}">
+<style>
+    /* Стили для выделенного изображения */
+    .selected-image {
+        border: 2px solid #4CAF50; /* Зеленая рамка для выделенного изображения */
+        box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); /* Легкая тень для выделенного изображения */
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+<div class="container">
+    <div class="section">
+        <h2>Добавить категорию</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="name">Название категории</label>
+                <input type="text" name="name" class="custom-input" placeholder="Введите название категории" required>
+            </div>
+
+            <div class="form-group">
+                <label for="image_file">Загрузить изображение</label>
+                <div class="custom-file-upload">
+                    <input type="file" name="image_file" id="image_file" class="custom-image-input" accept="image/*">
+                    <label for="image_file" class="custom-image-label">Выберите изображение</label>
+                </div>
+                <p>Или выберите картинку из представленных:</p>
+            </div>
+
+            <input type="hidden" name="image_url" id="image_url"> <!-- Для выбранной картинки -->
+
+            <div class="image-selection">
+                <div class="image-options">
+                    <img src="{% static 'categories/img/games.png' %}" alt="Игры" class="selectable-image" data-image-url="{% static 'categories/img/games.png' %}">
+                    <img src="{% static 'categories/img/work.png' %}" alt="Работа" class="selectable-image" data-image-url="{% static 'categories/img/work.png' %}">
+                    <img src="{% static 'categories/img/wear.png' %}" alt="Одежда" class="selectable-image" data-image-url="{% static 'categories/img/wear.png' %}">
+                    <img src="{% static 'categories/img/options.png' %}" alt="Настройки" class="selectable-image" data-image-url="{% static 'categories/img/options.png' %}">
+                </div>
+            </div>
+
+            <button type="submit" class="custom-button">Добавить категорию</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const images = document.querySelectorAll('.selectable-image');
+    const hiddenInput = document.getElementById('image_url');
+    const imageFileInput = document.getElementById('image_file');
+    
+    const baseUrl = window.location.origin;  // http://localhost:8000 или https://example.com
+    
+    images.forEach(image => {
+        image.addEventListener('click', function () {
+            const relativeUrl = this.getAttribute('data-image-url');
+            const absoluteUrl = baseUrl + relativeUrl;  // Превращаем в полный путь
+    
+            hiddenInput.value = absoluteUrl;
+    
+            // Убираем активность у всех и добавляем к текущей
+            images.forEach(img => img.classList.remove('selected-image'));
+            this.classList.add('selected-image');
+    
+            // Очищаем выбранный файл, если был загружен
+            imageFileInput.value = '';
+    
+        });
+    });
+    
+    // Если пользователь выбрал файл — очищаем image_url
+    imageFileInput.addEventListener('change', function () {
+        if (this.files.length > 0) {
+            hiddenInput.value = '';
+            images.forEach(img => img.classList.remove('selected-image'));
+        }
+    });
+    
+</script>
+
+
+
+
+{% endblock content %}
