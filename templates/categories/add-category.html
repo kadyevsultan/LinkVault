@@ -10,6 +10,11 @@
         border: 2px solid #4CAF50; /* Зеленая рамка для выделенного изображения */
         box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); /* Легкая тень для выделенного изображения */
     }
+    .file-name {
+        margin-top: 10px; /* Отступ сверху */
+        color: #e0e0e0; /* Цвет текста */
+        font-size: 16px; /* Размер шрифта */
+    }
 </style>
 {% endblock style %}
 
@@ -31,6 +36,7 @@
                     <input type="file" name="image_file" id="image_file" class="custom-image-input" accept="image/*">
                     <label for="image_file" class="custom-image-label">Выберите изображение</label>
                 </div>
+                <p class="file-name" id="file-name-display">Имя файла не выбрано</p> <!-- Элемент для отображения имени файла -->
                 <p>Или выберите картинку из представленных:</p>
             </div>
 
@@ -54,6 +60,7 @@
     const images = document.querySelectorAll('.selectable-image');
     const hiddenInput = document.getElementById('image_url');
     const imageFileInput = document.getElementById('image_file');
+    const fileNameDisplay = document.getElementById('file-name-display'); // Элемент для отображения имени файла
     
     const baseUrl = window.location.origin;  // http://localhost:8000 или https://example.com
     
@@ -70,21 +77,26 @@
     
             // Очищаем выбранный файл, если был загружен
             imageFileInput.value = '';
-    
+            fileNameDisplay.textContent = 'Имя файла не выбрано'; // Сбрасываем имя файла
         });
     });
     
-    // Если пользователь выбрал файл — очищаем image_url
+    // Если пользователь выбрал файл — очищаем image_url и отображаем имя файла
     imageFileInput.addEventListener('change', function () {
         if (this.files.length > 0) {
-            hiddenInput.value = '';
+            hiddenInput.value = ''; // Очищаем выбранный URL, если был выбран файл
+            
+            // Получаем имя файла и отображаем его
+            const fileName = this.files[0].name; // Имя первого выбранного файла
+            fileNameDisplay.textContent = `Выбранный файл: ${fileName}`; // Обновляем текст для отображения имени файла
+            
+            // Убираем выделение у изображений
             images.forEach(img => img.classList.remove('selected-image'));
+        } else {
+            // Если файл не выбран, сбрасываем текст
+            fileNameDisplay.textContent = 'Имя файла не выбрано';
         }
     });
-    
 </script>
-
-
-
 
 {% endblock content %}

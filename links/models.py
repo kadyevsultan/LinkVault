@@ -31,11 +31,11 @@ class Category(models.Model):
 
 # Ссылки
 class Link(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='links') # Связь с пользователем
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_links') # Связь с пользователем
     link = models.TextField(blank=False, null=False) # Ссылка
     name = models.CharField(max_length=50) # Название ссылки
     description = models.TextField(blank=True, null=True, max_length=254) # Описание
-    categories = models.ManyToManyField(Category, related_name='link_set', blank=True) # Связь с категориями
+    categories = models.ManyToManyField(Category, related_name='category_links', blank=True) # Связь с категориями
     favicon_image = models.ImageField(upload_to='favicons/', blank=True, null=True, default='defaults/favicon_default.png') # Изображение favicon
     created_at = models.DateTimeField(auto_now_add=True) # Дата создания
     updated_at = models.DateTimeField(auto_now=True) # Дата обновления

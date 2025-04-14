@@ -11,7 +11,7 @@
     <h2>Детали ссылки</h2>
     <div class="link-detail">
         <img src="{{ link.favicon_image.url }}" alt="Favicon" class="favicon">
-        <h3>Название:{{ link.name }}</h3>
+        <h3>Название: {{ link.name }}</h3>
         <p><strong>Ссылка:</strong> <a href="{{ link.link }}" target="_blank" class='link'>
             {{ link.link|slice:":55" }}{% if link.link|length > 55 %}...{% endif %}
         </a>

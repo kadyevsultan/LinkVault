@@ -15,21 +15,26 @@
             <div class="category-list">
                 {% for category in categories %}
                     <div class="category-item">
-                        <a href="">
+                        <a href="{% url 'links:links-by-category' category.id %}">
                             {% if category.image %}
                                 <img src="{{ category.image.url }}" alt="Иконка категории">
                             {% endif %}
                             <div class="category-info">
-                                <h3>{{ category.name }}</h3>
+                                <h3>{{ category.name|slice:":10" }}{% if category.name|length > 10 %}...{% endif %}</h3>
                             </div>
                         </a>
+                        <div class="dots">
+                            <a href="{% url 'links:edit-category' category.id %}" class="edit-link">•••</a> <!-- Ссылка на редактирование -->
+                        </div>
                     </div>
                 {% endfor %}
             </div>
-            <div class="add-button"><a href="{% url 'links:add-category' %}">+</a></div>
+            <div class="add-button">
+                <a href="{% url 'links:add-category' %}">+</a> <!-- Кнопка для добавления новой категории -->
+            </div>
         {% else %}
-            <div class="add-category-button">
-                <a href="{% url 'links:add-category' %}" class="plus-button">+</a>
+            <div class="add-button">
+                <a href="{% url 'links:add-category' %}">+</a> <!-- Кнопка для добавления категории -->
             </div>
             <p>У вас пока нет категорий.</p>
         {% endif %}

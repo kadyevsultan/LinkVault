@@ -14,6 +14,7 @@
 
 h2 {
     margin-top: 0;
+    color: #e0e0e0; /* Цвет заголовков */
 }
 
 .welcome-section {
@@ -27,7 +28,6 @@ h2 {
 
 .welcome-section h2 {
     margin: 0 0 15px; /* Отступы для заголовка */
-    color: #e0e0e0; /* Цвет текста заголовка */
     font-size: 24px; /* Размер шрифта заголовка */
 }
 
@@ -55,44 +55,95 @@ h2 {
     transform: scale(1.05); /* Увеличение кнопки при наведении */
 }
 
-.bookmark-list {
+.bookmark-list, .category-list {
     display: flex;
-    flex-wrap: wrap; /* Позволяет закладкам переноситься на следующую строку */
+    flex-wrap: wrap; /* Позволяет элементам переноситься на следующую строку */
 }
 
-.bookmark-item {
+.item {
     display: flex;
     flex-direction: column; /* Вертикальное расположение */
     align-items: center; /* Центрирование содержимого */
-    background: #2a2a2a; /* Фон для каждой закладки */
+    background: #2a2a2a; /* Фон для каждого элемента */
     border-radius: 5px;
     padding: 8px; /* Отступ внутри блока */
     margin: 8px; /* Отступ между блоками */
-    width: calc(20% - 32px); /* Ширина закладки с учетом отступов */
+    width: calc(20% - 32px); /* Ширина элемента с учетом отступов */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.bookmark-item img {
+.item img {
     margin-bottom: 10px; /* Отступ между иконкой и текстом */
     border-radius: 5px; /* Закругление иконки */
     width: 40px; /* Ширина иконки */
     height: 40px; /* Высота иконки */
 }
 
-.bookmark-info {
+.category-item img {
+    margin-bottom: 10px; /* Отступ между иконкой и текстом */
+    border-radius: 5px; /* Закругление иконки */
+    width: 40px; /* Ширина иконки */
+    height: 40px; /* Высота иконки */
+    display: block; /* Убедитесь, что изображение является блочным элементом */
+    margin-left: auto; /* Центрирование по горизонтали */
+    margin-right: auto; /* Центрирование по горизонтали */
+}
+
+.info {
     text-align: center; /* Центрирование текста */
 }
 
-.bookmark-info h3 {
+.info h3 {
     margin: 0;
+    color: #e0e0e0; /* Цвет текста заголовка */
 }
 
-.bookmark-info a {
+.info a {
     color: #e0e0e0; /* Цвет текста ссылки */
     text-decoration: none; /* Убираем подчеркивание */
 }
 
-.bookmark-info a:hover {
+.info a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+.add-button {
+    background: #28a745; /* Зеленый фон для кнопки добавления */
+    color: white;
+    border-radius: 50%; /* Закругление кнопки */
+    width: 40px; /* Ширина кнопки */
+    height: 40px; /* Высота кнопки */
+    display: flex; /* Используем flex для центрирования содержимого */
+    align-items: center; /* Центрирование по вертикали */
+    justify-content: center; /* Центрирование по горизонтали */
+    font-size: 24px; /* Размер шрифта */
+    cursor: pointer; /* Указатель при наведении */
+    margin-top: 20px; /* Отступ сверху */
+    transition: background 0.3s; /* Плавный переход для фона */
+}
+
+.add-button a {
+    color: white; /* Цвет текста внутри кнопки */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+.add-button:hover {
+    background: #218838; /* Темный зеленый при наведении */
+}
+
+/* Дополнительные стили для общего оформления */
+body {
+    background-color: #121212; /* Цвет фона страницы */
+    color: #e0e0e0; /* Цвет текста по умолчанию */
+    font-family: Arial, sans-serif; /* Шрифт по умолчанию */
+}
+
+.section a {
+    color: #ffffff; /* Цвет ссылок */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+.section a:hover {
     text-decoration: underline; /* Подчеркивание при наведении */
 }
 
@@ -106,62 +157,6 @@ h2 {
     color: white;
 }
 
-.bookmark-item:hover .dots {
+.item:hover .dots {
     opacity: 1; /* Полная видимость при наведении */
-}
-
-.category-list {
-    display: flex;
-    flex-wrap: wrap; /* Позволяет категориям переноситься на следующую строку */
-}
-
-.category-item {
-    display: flex;
-    flex-direction: column; /* Вертикальное расположение */
-    align-items: center; /* Центрирование содержимого */
-    background: #2a2a2a; /* Фон для каждой категории */
-    border-radius: 5px;
-    padding: 8px; /* Уменьшенный отступ */
-    margin: 8px; /* Уменьшенный отступ */
-    width: calc(20% - 32px); /* Уменьшенная ширина категории */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.category-item img {
-    margin-bottom: 10px; /* Отступ между иконкой и текстом */
-    border-radius: 5px; /* Закругление иконки */
-    width: 40px; /* Ширина иконки */
-    height: 40px; /* Высота иконки */
-}
-
-.category-info {
-    text-align: center; /* Центрирование текста */
-}
-
-.category-info h3 {
-    margin: 0;
-}
-
-.add-button {
-    background: #28a745; /* Зеленый фон для кнопки добавления */
-    color: white;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background 0.3s;
-}
-
-.add-button a {
-    color: white;
-    text-decoration: none;
-}
-
-.add-button:hover {
-    background: #218838; /* Темный зеленый при наведении */
 }
