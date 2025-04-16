@@ -1,13 +1,13 @@
-/* Контейнер для формы логина */
+/* Контейнер для формы редактирования профиля */
 .container {
     display: flex; /* Используем Flexbox для центрирования */
     justify-content: center; /* Центрируем по горизонтали */
     align-items: center; /* Центрируем по вертикали */
-    height: 100vh; /* Высота контейнера равна высоте экрана */
+    height: 85vh; /* Высота контейнера равна высоте экрана */
 }
 
-/* Стили для секции логина */
-.login-section {
+/* Стили для секции редактирования профиля */
+.section {
     max-width: 400px; /* Максимальная ширина формы */
     width: 100%; /* Ширина 100% для мобильных устройств */
     padding: 50px; /* Внутренние отступы */
@@ -17,7 +17,7 @@
 }
 
 /* Заголовок формы */
-.login-section h2 {
+.section h2 {
     text-align: center; /* Центрирование заголовка */
     margin-bottom: 20px; /* Отступ снизу */
 }
@@ -28,14 +28,14 @@
 }
 
 /* Стили для меток */
-.login-section label {
+.section label {
     display: block; /* Блочный элемент для меток */
     margin-bottom: 5px; /* Отступ снизу */
 }
 
 /* Стили для полей ввода */
-.login-section input[type="text"],
-.login-section input[type="password"] {
+.section input[type="text"],
+.section input[type="email"] {
     width: 100%; /* Ширина полей ввода */
     padding: 10px; /* Внутренние отступы */
     border: 1px solid #ccc; /* Рамка */
@@ -43,54 +43,19 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Тень для полей */
     background: #2a2a2a; /* Фон для полей ввода */
     color: #e0e0e0; /* Цвет текста в полях */
+    margin-bottom: 15px; /* Отступ между полями */
 }
 
-/* Стили при фокусе на полях ввода */
-.login-section input[type="text"]:focus,
-.login-section input[type="password"]:focus {
-    border-color: #28a745; /* Цвет рамки при фокусе */
-    box-shadow: 0 0 10px rgba(40, 167, 69, 0.5); /* Тень при фокусе */
+/* Стили для поля email, когда оно read-only */
+.section input[type="email"][readonly] {
+    background: #3a3a3a; /* Более светлый фон для read-only поля */
+    color: #b0b0b0; /* Более светлый цвет текста */
+    cursor: not-allowed; /* Курсор для read-only поля */
 }
 
 /* Стили для кнопки отправки */
-.submit-button {
+.button {
     background: #28a745; /* Зеленый фон для кнопки */
-    color: white; /* Цвет текста кнопки */
-    border: none; /* Убираем рамку */
-    border-radius: 5px; /* Закругление углов кнопки */
-    padding: 10px 20px; /* Внутренние отступы */
-    cursor: pointer; /* Курсор для кнопки */
-    transition: background 0.3s; /* Плавный переход для фона */
-    width: 100%; /* Ширина кнопки 100% */
-}
-
-/* Стили при наведении на кнопку */
-.submit-button:hover {
-    background: #218838; /* Темный зеленый при наведении */
-}
-
-/* Стили для параграфа внутри секции логина */
-.login-section .login-note {
-    margin-top: 10px; /* Отступ сверху */
-    text-align: center; /* Центрирование текста */
-}
-
-/* Стили для ссылок внутри секции логина */
-.login-section a {
-    text-decoration: none; /* Убираем подчеркивание */
-    color: #28a745; /* Цвет ссылки */
-}
-
-.login-section a:hover {
-    text-decoration: underline; /* Подчеркивание при наведении */
-}
-
-/* Стили для кнопки входа через Google */
-.google-button {
-    display: flex; /* Используем Flexbox для выравнивания иконки и текста */
-    align-items: center; /* Центрируем иконку по вертикали */
-    justify-content: center; /* Центрируем содержимое по горизонтали */
-    background: #db4437; /* Красный фон для кнопки Google */
     color: white; /* Цвет текста кнопки */
     border: none; /* Убираем рамку */
     border-radius: 5px; /* Закругление углов кнопки */
@@ -101,18 +66,45 @@
     margin-top: 15px; /* Отступ сверху */
 }
 
-/* Стили для иконки Google */
-.google-icon {
-    width: 20px; /* Ширина иконки */
-    height: 20px; /* Высота иконки */
-    margin-right: 10px; /* Отступ справа от иконки */
+/* Стили при наведении на кнопку "Сохранить изменения" */
+.button:hover {
+    background: #218838; /* Темный зеленый при наведении */
 }
 
-/* Стили при наведении на кнопку Google */
-.google-button:hover {
-    background: #c13528; /* Темный красный при наведении */
+/* Контейнер для кнопок */
+.button-container {
+    display: flex; /* Используем Flexbox для выравнивания кнопок */
+    justify-content: space-between; /* Распределяем кнопки по ширине */
+    margin-top: 20px; /* Отступ сверху для контейнера кнопок */
+}
+
+/* Стили для кнопок */
+.delete-button,
+.reset-button {
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Закругление углов кнопки */
+    padding: 10px; /* Внутренние отступы */
+    cursor: pointer; /* Курсор для кнопки */
+    margin: 0 1%; /* Горизонтальные отступы между кнопками */
+    color: white;
+    font-size: 15px;
+    align-items: center;
+}
+
+/* Стили для кнопки удаления аккаунта */
+.delete-button {
+    background: #dc3545; /* Красный фон для кнопки удаления */
+}
+
+/* Стили для кнопки сброса пароля */
+.reset-button {
+    background: #007bff; /* Синий фон для кнопки сброса пароля */
+    text-decoration: none;
 }
 
 .error {
-    color: rgb(209, 41, 41);
+    color: rgb(136, 31, 31); /* Цвет текста ошибок */
+    margin-bottom: 5px;
+    font-size: 14px; /* Размер шрифта для ошибок */
 }

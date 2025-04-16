@@ -25,6 +25,9 @@
             </nav>
             <div class="login-icon">
                 {% if user.is_authenticated %}
+                    <a href="{% url 'accounts:profile' %}" class="icon-link">
+                        <img src="{% static 'links/img/user.svg' %}" alt="Profile" class="logout-icon-img">
+                    </a>
                     <a href="{% url 'accounts:logout' %}" class="icon-link"> <!-- Ссылка на выход -->
                         <img src="{% static 'links/img/logout.svg' %}" alt="Logout" class="logout-icon-img"> <!-- Иконка выхода -->
                     </a>

@@ -23,5 +23,43 @@ class RegisterForm(forms.ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField(label='Логин или Email', widget=forms.TextInput ,max_length=254)
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        password = cleaned_data.get('password')
+        
+        if not User.objects.filter(username=username).exists() and not User.objects.filter(email=username).exists():
+            raise forms.ValidationError("Пользователь с таким логином или email не зарегистрирован")
+        
+        return cleaned_data
 
 
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+        
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if username == self.instance.username:
+            return username
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Пользователь с таким логином уже существует")
+        return username
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs['readonly'] = True
+
+
+class ConfirmEmailForResetPasswordForm(forms.Form):
+    email = forms.EmailField(label='Email', widget=forms.EmailInput)
+    
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if not User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Пользователь с таким email не зарегистрирован")
+        return email
+    
+    

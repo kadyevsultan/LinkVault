@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подтверждение регистрации</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Темный фон страницы */
+            color: #ffffff; /* Белый цвет текста */
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px; /* Максимальная ширина контейнера */
+            margin: 0 auto; /* Центрируем контейнер */
+            background-color: #1e1e1e; /* Темный фон для письма */
+            border-radius: 5px; /* Закругленные углы */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
+            padding: 20px; /* Внутренние отступы */
+        }
+        h1 {
+            color: #28a745; /* Зеленый цвет для заголовка */
+        }
+        p {
+            line-height: 1.5; /* Высота строки */
+            color: white;
+        }
+        .button {
+            display: inline-block; /* Блочный элемент для кнопки */
+            padding: 12px 25px; /* Внутренние отступы */
+            background: #28a745; /* Зеленый фон для кнопки */
+            color: white; /* Цвет текста */
+            text-decoration: none; /* Убираем подчеркивание */
+            border-radius: 5px; /* Закругленные углы */
+            margin-top: 20px; /* Отступ сверху */
+            transition: background 0.3s, transform 0.3s; /* Плавный переход для фона и трансформации */
+        }
+        .button:hover {
+            background: #218838; /* Темный зеленый при наведении */
+            transform: scale(1.05); /* Увеличение кнопки при наведении */
+        }
+        .footer {
+            margin-top: 20px; /* Отступ сверху */
+            font-size: 12px; /* Размер шрифта для подвала */
+            color: #b0b0b0; /* Цвет текста подвала */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Добро пожаловать в LinkVault!</h1>
+        <p>Спасибо за регистрацию! Чтобы подтвердить ваш аккаунт,{{ user.username }} пожалуйста, нажмите на кнопку ниже:</p>
+        <a href="{{ link }}" class="button">Подтвердить аккаунт</a>
+        <p>Если кнопка не работает, вы также можете скопировать и вставить следующую ссылку в адресную строку вашего браузера:</p>
+        <p>{{ link }}</p>
+        <div class="footer">
+            <p>С уважением,<br>Команда LinkVault</p>
+            <strong>Ваш регистрационный токен истекает в {{ expiry|time:"TIME_FORMAT" }}</strong>
+        </div>
+    </div>
+</body>
+</html>

@@ -31,6 +31,9 @@
                 <div class="error">{{ form.non_field_errors }}</div> <!-- Общие ошибки формы -->
             {% endif %}
         </form>
+
+        <p class="login-note">Забыли пароль? <a href="{% url 'accounts:reset-password' %}">Сбросить пароль</a></p>
+
         <p class="login-note">Нет аккаунта? <a href="{% url 'accounts:register' %}">Зарегистрируйтесь</a></p>
         
         <!-- Кнопка для входа через Google -->

@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+{% endblock style %}
+
+
+{% block content %}
+<div class="container">
+    <div class="section">
+        <h2>Редактирование профиля</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="username">Имя пользователя:</label>
+            <input type="text" name="username" id="username" value="{{ form.username.value }}" required>
+            {% if form.username.errors %}
+                <div class="error">
+                    {{ form.username.errors|join:", " }}
+                </div>
+            {% endif %}
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" value="{{ form.email.value }}" readonly>
+
+            <button type="submit" class="button">Сохранить изменения</button>
+        </form>
+        
+        <div class="button-container">
+            <form method="post" action="{% url 'accounts:delete-profile' %}">
+                {% csrf_token %}
+                <button type="submit" class="delete-button">Удалить аккаунт</button>
+            </form>
+            
+            <a href="{% url 'accounts:reset-password' %}" class="reset-button">Сбросить пароль</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -12,8 +12,13 @@
     <div class="welcome-section">
         <h2>Добро пожаловать в LinkVault!</h2>
         <p>Сохраняйте и управляйте своими закладками легко и удобно. Создавайте категории, добавляйте закладки и делитесь ими с друзьями.</p>
+        {% if user.is_authenticated %}
+        <p>Скорее! Опробуй функционал предоставляемый нами!</p>
+        <p>⬇️</p>
+        {% else %}
         <a href="{% url 'accounts:register' %}" class="register-button">Нет аккаунта? Зарегистрируйся!</a>
         <a href="{% url 'accounts:login' %}" class="register-button">Уже есть аккаунт? Вход</a>
+        {% endif %}
     </div>
 
     <div class="section bookmarks">
