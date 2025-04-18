@@ -1,11 +1,11 @@
 import os
 import requests
+import logging
 from linkvault import settings
-
-from django.core.files.base import ContentFile
 
 from urllib.parse import urlparse
 
+logger = logging.getLogger(__name__)
 
 def download_favicon(link):
     """Скачивает favicon по ссылке и возвращает путь к сохранённому файлу"""
@@ -41,6 +41,7 @@ def download_favicon(link):
         return path
     
     except requests.RequestException:    
+        logger.warning(f'Произошла ошибка при скачивании favicon: {favicon_url}')
         return None # нет favicon
         
 

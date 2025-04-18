@@ -14,6 +14,10 @@ from .services import (
     delete_link, get_link_by_id, create_or_edit_link_from_form, get_category_by_id_and_user, delete_category,
 )
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 """ Главная страница """
 def index_view(request):
@@ -58,6 +62,7 @@ def delete_link_view(request, link_id):
     except PermissionDenied: 
         messages.error(request, 'Вы не можете удалить эту закладку')
     except Exception as e:
+        logger.error(e)
         messages.error(request, f'Произошла ошибка при удалении закладки, попробуйте позже.')
     return redirect('links:my-links')
 
@@ -73,6 +78,9 @@ def add_link_view(request):
         except IntegrityError:
             form.add_error("link", "Эта ссылка уже добавлена в ваш список.")
             messages.error(request, 'Эта ссылка уже добавлена в ваш список.')
+        except Exception as e:
+            logger.error(f'Произошла ошибка при добавлении закладки: {e}')
+            messages.error(request, f'Произошла ошибка при добавлении закладки')
     else:
         messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
         
@@ -87,15 +95,12 @@ def add_link_view(request):
 """ Редактирование закладки """
 def edit_link_view(request, link_id):
     link = get_link_by_id(link_id)
-    if request.method == 'POST':
-        form = EditLinkForm(request.POST, instance=link)
-        if form.is_valid():
-            create_or_edit_link_from_form(form=form, user=request.user)
-            messages.success(request, 'Ссылка успешно обновлена')
-            return redirect('links:detail-link', link_id=link_id)
-    else:
-        form = EditLinkForm(instance=link)
-        
+    form = EditLinkForm(request.POST or None, instance=link)
+    if request.method == 'POST' and form.is_valid():
+        create_or_edit_link_from_form(form=form, user=request.user)
+        messages.success(request, 'Ссылка успешно обновлена')
+        return redirect('links:detail-link', link_id=link_id)
+
     context = {
         'title': 'LinkVault - Редактирование ссылки',
         'form': form,
@@ -129,7 +134,8 @@ def add_category_view(request):
         except IntegrityError:
             form.add_error("name", "Эта категория уже добавлена в ваш список.")
         except Exception as e:
-            messages.error(request, f'Произошла ошибка при добавлении категории: {str(e)}')
+            logger.error(f'Произошла ошибка при добавлении категории: {e}')
+            messages.error(request, f'Произошла ошибка при добавлении категории')
             return redirect('links:my-categories')
 
             
@@ -153,6 +159,7 @@ def edit_category_view(request, category_id):
             messages.success(request, 'Категория успешно обновлена')
             return redirect('links:my-categories')
         except Exception as e:
+            logger.error(f'Произошла ошибка при обновлении категории: {e}')
             messages.error(request, f'Произошла ошибка при обновлении категории.')
             return redirect('links:my-categories')
         
@@ -191,6 +198,7 @@ def add_links_to_category_view(request, category_id):
                 link.save()
             messages.success(request, 'Закладки успешно добавлены в категорию')
         except Exception as e:
+            logger.error(f'Произошла ошибка при добавлении закладок в категорию: {e}')
             messages.error(request, f'Произошла ошибка при добавлении закладок в категорию')
         return redirect('links:links-by-category', category_id=category_id)
         
@@ -210,5 +218,15 @@ def delete_category_view(request, category_id):
             delete_category(request=request, category_id=category_id)
             messages.success(request, 'Категория успешно удалена')
         except Exception as e:
+            logger.error(f'Произошла ошибка при удалении категории: {e}')
             messages.error(request, f'Произошла ошибка при удалении категории')
     return redirect('links:my-categories')
+
+
+""" Страница о нас """
+def about_view(request):
+    context = {
+        'title': 'LinkVault - О нас',
+        'actual_year': actual_year,
+    }
+    return render(request, 'about.html', context=context)

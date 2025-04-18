@@ -1,12 +1,14 @@
 import os
 
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from urllib.parse import urlparse
 
 from linkvault import settings
 from .utils import download_favicon
+
+User = get_user_model()
 
 # Категории ссылок
 class Category(models.Model):
