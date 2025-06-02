@@ -1,0 +1,60 @@
+/* Основной контейнер */
+.about-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px; /* Отступы вокруг контейнера */
+    background: linear-gradient(to right, #2c3e50, #4ca1af); /* Градиентный фон */
+    min-height: 100vh; /* Минимальная высота контейнера */
+}
+
+/* Секция с содержимым */
+.about-section {
+    max-width: 800px; /* Максимальная ширина секции */
+    width: 100%; /* Ширина 100% для мобильных устройств */
+    padding: 30px; /* Внутренние отступы */
+    background: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый фон */
+    border-radius: 10px; /* Закругление углов */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Тень для секции */
+    color: #333; /* Цвет текста */
+}
+
+/* Заголовки */
+.about-title {
+    font-size: 2.5em; /* Размер шрифта для заголовка */
+    color: #2c3e50; /* Цвет заголовка */
+    margin-bottom: 20px; /* Отступ снизу */
+    text-align: center; /* Центрирование заголовка */
+}
+
+.about-subtitle {
+    font-size: 1.8em; /* Размер шрифта для подзаголовков */
+    color: #2980b9; /* Цвет подзаголовков */
+    margin-top: 30px; /* Отступ сверху */
+    margin-bottom: 10px; /* Отступ снизу */
+    text-align: center; /* Центрирование подзаголовков */
+}
+
+/* Параграфы */
+.about-text {
+    line-height: 1.6; /* Межстрочный интервал */
+    margin-bottom: 15px; /* Отступ между параграфами */
+}
+
+/* Список */
+.about-list {
+    margin-left: 20px; /* Отступ для списка */
+    list-style-type: disc; /* Стиль маркеров */
+}
+
+/* Ссылки */
+.about-link {
+    color: #2980b9; /* Цвет ссылок */
+    text-decoration: none; /* Убираем подчеркивание */
+    transition: color 0.3s ease; /* Плавный переход цвета */
+}
+
+.about-link:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+    color: #1a5276; /* Темнее цвет при наведении */
+}

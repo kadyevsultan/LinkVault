@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block style %}
+<style>
+    body {
+        background-color: #121212; /* Темный фон страницы */
+        color: #ffffff; /* Белый цвет текста */
+        font-family: Arial, sans-serif; /* Шрифт для всего тела */
+    }
+
+    .container {
+        display: flex;
+        justify-content: center; /* Центрируем содержимое по горизонтали */
+        align-items: center; /* Центрируем содержимое по вертикали */
+        padding: 40px;
+    }
+
+    .section {
+        background: #1e1e1e; /* Темный фон для секций */
+        border-radius: 8px; /* Закругленные углы */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
+        padding: 30px; /* Внутренние отступы */
+        width: 100%; /* Ширина секции */
+        max-width: 400px; /* Максимальная ширина секции */
+    }
+
+    h2 {
+        margin-top: 0;
+        color: #28a745; /* Зеленый цвет для заголовка */
+        text-align: center; /* Центрируем заголовок */
+    }
+
+    label {
+        color: #e0e0e0; /* Цвет текста меток */
+        margin-top: 10px; /* Отступ сверху для меток */
+        display: block; /* Блочный элемент для меток */
+    }
+
+    input[type="email"] {
+        width: 95%; /* Ширина поля ввода */
+        padding: 12px; /* Внутренние отступы */
+        margin-top: 5px; /* Отступ сверху для поля ввода */
+        border: 1px solid #ccc; /* Рамка поля ввода */
+        border-radius: 5px; /* Закругленные углы */
+        background: #2a2a2a; /* Темный фон для поля ввода */
+        color: #e0e0e0; /* Цвет текста в поле ввода */
+        font-size: 16px; /* Размер шрифта */
+    }
+
+    .button {
+        display: inline-block; /* Блочный элемент для кнопки */
+        padding: 12px 20px; /* Внутренние отступы */
+        background: #28a745; /* Зеленый фон для кнопки */
+        color: white; /* Цвет текста */
+        text-decoration: none; /* Убираем подчеркивание */
+        border-radius: 5px; /* Закругленные углы */
+        margin-top: 20px; /* Отступ сверху */
+        width: 100%; /* Ширина кнопки */
+        font-size: 16px; /* Размер шрифта */
+        transition: background 0.3s, transform 0.3s, box-shadow 0.3s; /* Плавный переход для фона, трансформации и тени */
+        cursor: pointer; /* Изменяем курсор на указатель */
+        border: none; /* Убираем рамку */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для кнопки */
+    }
+    
+    .button:hover {
+        background: #218838; /* Темный зеленый при наведении */
+        transform: translateY(-2px); /* Поднимаем кнопку при наведении */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Увеличиваем тень при наведении */
+    }
+
+    .error {
+        color: red; /* Цвет текста ошибок */
+        margin-top: 10px; /* Отступ сверху для ошибок */
+        font-size: 14px; /* Размер шрифта для ошибок */
+    }
+
+    p {
+        text-align: center; /* Центрируем текст */
+        color: #e0e0e0; /* Цвет текста */
+        margin-top: 15px; /* Отступ сверху для параграфов */
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+<div class="container">
+    <div class="section">
+        <h2>Сброс пароля</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="email">Введите ваш Email:</label>
+            <input type="email" name="email" id="email" required>
+            {% if form.email.errors %}
+                <div class="error">{{ form.email.errors.0 }}</div>
+            {% endif %}
+            
+            <button type="submit" class="button">Сброс</button>
+        </form>
+        
+    </div>
+</div>
+{% endblock content %}

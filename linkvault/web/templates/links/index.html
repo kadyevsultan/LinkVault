@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'links/css/index.css' %}">
+{% endblock style %}
+
+{% block content %}
+<div class="container">
+    
+    <div class="welcome-section">
+        <h2>Добро пожаловать в LinkVault!</h2>
+        <p>Сохраняйте и управляйте своими закладками легко и удобно. Создавайте категории, добавляйте закладки и делитесь ими с друзьями.</p>
+        {% if user.is_authenticated %}
+            <p>Скорее! Опробуй функционал предоставляемый нами!</p>
+            <p>⬇️</p>
+        {% else %}
+            <p>Помните, вы можете добавлять закладки и категории для них и без аккаунта, но при закрытии сайта данные не сохранятся!</p>
+            <a href="{% url 'accounts:register' %}" class="register-button">Нет аккаунта? Зарегистрируйся!</a>
+            <a href="{% url 'accounts:login' %}" class="register-button">Уже есть аккаунт? Вход</a>
+        {% endif %}
+    </div>
+
+    <div class="section bookmarks">
+        <h2>Последние добавленные закладки</h2>
+        <div class="bookmark-list">
+            {% for link in last_links %}
+                <div class="item bookmark-item">
+                    <a href="{{ link.link }}" target='_blank'>
+                        {% if user.is_authenticated %}
+                            <img src="{{ link.favicon_image.url }}" alt="Иконка закладки">
+                        {% else %}
+                            <img src="media/{{ link.favicon_image }}" alt="Иконка закладки">
+                        {% endif %}
+                    </a>
+                    <div class="info">
+                        <h3><a href="{{ link.link }}" target='_blank'>{{ link.name|slice:":10" }}{% if link.name|length > 10 %}...{% endif %}</a></h3>
+                    </div>
+                    <br>
+                    <span class="dots"><a href='{% url "links:detail-link" link.id %}'>•••</a></span>
+                </div>
+            {% empty %}
+                <p>Пока нет добавленных закладок.</p>
+            {% endfor %}
+        </div>
+        <div class="add-button"><a href="{% url 'links:add-link' %}">+</a></div>
+    </div>
+
+    <div class="section categories">
+        <h2>Последние добавленные категории</h2>
+        <div class="category-list">
+            {% for category in last_categories %}
+                <div class="item category-item">
+                    <a href="{% url 'links:links-by-category' category.id %}">
+                        {% if user.is_authenticated %}
+                            <img src="{% if category.image %}{{ category.image.url }}{% else %}{% static 'links/img/category.png' %}{% endif %}" alt="Иконка категории">
+                        {% else %}
+                            <img src="{% if category.image %}media/{{ category.image }}{% else %}{% static 'links/img/category.png' %}{% endif %}" alt="Иконка категории">
+                        {% endif %}
+                        <div class="info">
+                            <h3>{{ category.name|slice:":10" }}{% if category.name|length > 10 %}...{% endif %}</h3>
+                        </div>
+                    </a>
+                    <br>
+                    <span class="dots"><a href='{% url "links:edit-category" category.id %}'>•••</a></span>
+                </div>
+            {% empty %}
+                <p>Пока нет добавленных категорий.</p>
+            {% endfor %}
+        </div>
+        <div class="add-button">
+            <a href="{% url 'links:add-category' %}">+</a>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}

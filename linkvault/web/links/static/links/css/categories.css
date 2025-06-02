@@ -1,0 +1,108 @@
+.container {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение секций */
+    margin: 20px;
+}
+
+.section {
+    background: #1e1e1e; /* Темный фон для секций */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    margin-bottom: 20px; /* Отступ между секциями */
+}
+
+h2 {
+    text-align: center; /* Центрируем заголовок */
+    color: #e0e0e0; /* Светлый цвет текста */
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+.category-list {
+    display: flex;
+    flex-wrap: wrap; /* Позволяет категориям переноситься на следующую строку */
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение */
+    align-items: center; /* Центрирование содержимого */
+    background: #2a2a2a; /* Фон для каждой категории */
+    border-radius: 5px;
+    padding: 8px; /* Отступ внутри блока */
+    margin: 8px; /* Отступ между блоками */
+    width: calc(20% - 32px); /* Ширина категории с учетом отступов */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    text-align: center; /* Центрирование текста */
+}
+
+.category-item a{
+    text-decoration: none;
+}
+
+.category-item img {
+    margin-bottom: 10px; /* Отступ между иконкой и текстом */
+    border-radius: 5px; /* Закругление иконки */
+    width: 40px; /* Ширина иконки */
+    height: 40px; /* Высота иконки */
+}
+
+.category-info h3 {
+    margin: 0;
+    color: #e0e0e0; /* Цвет текста заголовка категории */
+}
+
+.category-info a {
+    color: #e0e0e0; /* Цвет текста ссылки */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+.category-info a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+/* Стили для кнопки добавления */
+.add-button {
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.add-button a {
+    display: inline-flex; /* Используем flex для центрирования содержимого */
+    align-items: center; /* Центрируем содержимое по вертикали */
+    justify-content: center; /* Центрируем содержимое по горизонтали */
+    background-color: #28a745; /* Зеленый цвет фона */
+    color: white; /* Цвет текста */
+    padding: 12px 20px; /* Отступы */
+    border-radius: 5px; /* Закругленные углы */
+    text-decoration: none; /* Убираем подчеркивание */
+    font-size: 20px; /* Размер шрифта */
+    transition: background-color 0.3s ease; /* Плавный переход */
+}
+
+.add-button a:hover {
+    background-color: #218838; /* Темно-зеленый цвет при наведении */
+}
+
+/* Стили для плюса */
+.add-button a::before {
+    font-size: 24px; /* Размер плюса */
+    margin-right: 8px; /* Отступ справа от плюса */
+}
+
+.dots {
+    margin-top: 15px;
+    opacity: 0; /* Начальная прозрачность */
+    transition: opacity 0.3s ease; /* Плавный переход */
+    text-align: center; /* Центрирование содержимого */
+}
+
+.dots a {
+    text-decoration: none; /* Убираем подчеркивание */
+    color: #e0e0e0; /* Цвет текста */
+    font-size: 18px; /* Размер шрифта */
+}
+
+.category-item:hover .dots {
+    opacity: 1; /* Полная видимость при наведении */
+}
+

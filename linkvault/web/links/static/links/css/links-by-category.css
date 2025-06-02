@@ -1,0 +1,133 @@
+.container {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение секций */
+    margin: 20px;
+}
+
+.section {
+    background: #1e1e1e; /* Темный фон для секций */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    margin-bottom: 20px; /* Отступ между секциями */
+}
+
+h2 {
+    text-align: center; /* Центрируем заголовок */
+    color: #e0e0e0; /* Светлый цвет текста */
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+.bookmark-list {
+    display: flex;
+    flex-wrap: wrap; /* Позволяет закладкам переноситься на следующую строку */
+}
+
+.bookmark-item {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение */
+    align-items: center; /* Центрирование содержимого */
+    background: #2a2a2a; /* Фон для каждой закладки */
+    border-radius: 5px;
+    padding: 8px; /* Отступ внутри блока */
+    margin: 8px; /* Отступ между блоками */
+    width: calc(20% - 32px); /* Ширина закладки с учетом отступов */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.bookmark-item img {
+    margin-bottom: 10px; /* Отступ между иконкой и текстом */
+    border-radius: 5px; /* Закругление иконки */
+    width: 40px; /* Ширина иконки */
+    height: 40px; /* Высота иконки */
+}
+
+.bookmark-info {
+    text-align: center; /* Центрирование текста */
+}
+
+.bookmark-info h3 {
+    margin: 0;
+}
+
+.bookmark-info a {
+    color: #e0e0e0; /* Цвет текста ссылки */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+.bookmark-info a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+.dots {
+    opacity: 0; /* Начальная прозрачность */
+    transition: opacity 0.3s ease; /* Плавный переход */
+    margin-top: 15px;
+}
+
+.dots a {
+    text-decoration: none;
+    color: white;
+}
+
+.bookmark-item:hover .dots {
+    opacity: 1; /* Полная видимость при наведении */
+}
+
+
+/* Стили для кнопки добавления */
+.add-button, .add-link-button {
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.add-button a, .add-link-button a {
+    display: inline-flex; /* Используем flex для центрирования содержимого */
+    align-items: center; /* Центрируем содержимое по вертикали */
+    justify-content: center; /* Центрируем содержимое по горизонтали */
+    background-color: #28a745; /* Зеленый цвет фона */
+    color: white; /* Цвет текста */
+    padding: 12px 20px; /* Отступы */
+    border-radius: 5px; /* Закругленные углы */
+    text-decoration: none; /* Убираем подчеркивание */
+    font-size: 20px; /* Размер шрифта */
+    transition: background-color 0.3s ease; /* Плавный переход */
+}
+
+.add-button a:hover, .add-link-button a:hover {
+    background-color: #218838; /* Темно-зеленый цвет при наведении */
+}
+
+/* Стили для плюса */
+.add-button a::before, .add-link-button a::before {
+    font-size: 24px; /* Размер плюса */
+    margin-right: 8px; /* Отступ справа от плюса */
+}
+
+/* Кнопка "X" для удаления закладки */
+.remove-link {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background-color: #ff4d4d; /* Красная кнопка */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    line-height: 18px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    cursor: pointer;
+    display: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    z-index: 1;
+}
+
+.remove-link:hover {
+    background-color: #cc0000;
+    transform: scale(1.1);
+}
+
+.bookmark-item:hover .remove-link {
+    display: inline-block;
+}
