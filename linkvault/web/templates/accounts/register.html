@@ -36,12 +36,12 @@
             </div>
             <button type="submit" class="submit-button">Зарегистрироваться</button>
         </form>
-        <p>Уже есть аккаунт? <a href="{% url 'accounts:login' %}">Войдите</a></p>
+        <p>Уже есть аккаунт? <a href="{% url 'accounts:login' %}" class="login-link">Войдите</a></p>
         <!-- Кнопка для регистрации через Google -->
-        <button class="google-button">
+        <a href="{% url 'social:begin' 'google-oauth2' %}" class="google-button">
             <img src="{% static 'links/img/google.ico' %}" alt="Google" class="google-icon"> <!-- Иконка Google -->
             Зарегистрироваться через Google
-        </button>
+        </a>
     </div>
 </div>
 {% endblock content %}

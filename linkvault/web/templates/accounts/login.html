@@ -32,15 +32,15 @@
             {% endif %}
         </form>
 
-        <p class="login-note">Забыли пароль? <a href="{% url 'accounts:reset-password' %}">Сбросить пароль</a></p>
+        <p class="login-note">Забыли пароль? <a href="{% url 'accounts:reset-password' %}" class="login-link">Сбросить пароль</a></p>
 
-        <p class="login-note">Нет аккаунта? <a href="{% url 'accounts:register' %}">Зарегистрируйтесь</a></p>
+        <p class="login-note">Нет аккаунта? <a href="{% url 'accounts:register' %}"  class="login-link">Зарегистрируйтесь</a></p>
         
         <!-- Кнопка для входа через Google -->
-        <button class="google-button">
+        <a href="{% url 'social:begin' 'google-oauth2' %}" class="google-button">
             <img src="{% static 'links/img/google.ico' %}" alt="Google" class="google-icon"> <!-- Иконка Google -->
             Войти через Google
-        </button>
+        </a>
     </div>
 </div>
 {% endblock content %}

@@ -11,7 +11,7 @@ class RegisterForm(forms.ModelForm):
         model = User
         fields = ['username', 'email', 'password']
         
-    def clean(self):
+    def clean_password(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
@@ -19,8 +19,14 @@ class RegisterForm(forms.ModelForm):
         if password and confirm_password and password != confirm_password:
             raise forms.ValidationError("Пароли не совпадают")
         
-        return cleaned_data
+        return cleaned_data  
     
+    def clean_email(self):
+        cleaned_data = super().clean()
+        email = cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Пользователь с таким email уже существует")
+        return email
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Логин или Email', widget=forms.TextInput ,max_length=254)

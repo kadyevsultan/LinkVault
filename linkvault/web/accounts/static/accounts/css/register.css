@@ -78,12 +78,12 @@
 }
 
 /* Стили для ссылок внутри секции регистрации */
-.registration-section a {
+.registration-section .login-link {
     text-decoration: none; /* Убираем подчеркивание */
     color: #28a745; /* Цвет ссылки */
 }
 
-.registration-section a:hover {
+.registration-section .login-link:hover {
     text-decoration: underline; /* Подчеркивание при наведении */
 }
 
@@ -101,6 +101,7 @@
     transition: background 0.3s; /* Плавный переход для фона */
     width: 100%; /* Ширина кнопки 100% */
     margin-top: 15px; /* Отступ сверху */
+    text-decoration: none;
 }
 
 /* Стили для иконки Google */

@@ -64,5 +64,51 @@
             });
         }, 5000); // 5000 миллисекунд = 5 секунд
     </script>
+    {% if show_exit_warning %}
+    <script>
+        let isInternalNavigation = false;
+        let isPageReloading = false;
+
+        // Клик по ссылке — внутренняя навигация
+        document.addEventListener("click", function (e) {
+            if (e.target.tagName === "A" || e.target.closest("a")) {
+                isInternalNavigation = true;
+            }
+        });
+
+        // Отправка формы — внутренняя навигация
+        document.addEventListener("submit", function () {
+            isInternalNavigation = true;
+        });
+
+        // Отслеживаем клавиши обновления
+        document.addEventListener("keydown", function (e) {
+            if ((e.key === "F5") || (e.key === "r" && (e.ctrlKey || e.metaKey))) {
+                isPageReloading = true;
+            }
+        });
+
+        // Отслеживаем видимость страницы (если быстро сменилось — это обновление)
+        let visibilityChangeTime = null;
+        document.addEventListener("visibilitychange", function () {
+            if (document.visibilityState === 'hidden') {
+                visibilityChangeTime = Date.now();
+            }
+        });
+
+        window.addEventListener("beforeunload", function (e) {
+            const now = Date.now();
+            const hiddenRecently = visibilityChangeTime && (now - visibilityChangeTime < 1000);
+
+            if (!isInternalNavigation && !isPageReloading && !hiddenRecently) {
+                const message = "У вас есть несохранённые данные. Вы действительно хотите покинуть страницу?";
+                e.preventDefault();
+                e.returnValue = message;
+                return message;
+            }
+        });
+    </script>
+    {% endif %}
+
 </body>
 </html>

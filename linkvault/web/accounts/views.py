@@ -12,7 +12,6 @@ from .services import (
 
 from links.services import actual_year
 
-
 import logging
 
 logger = logging.getLogger(__name__)
@@ -21,6 +20,9 @@ logger = logging.getLogger(__name__)
 # Регистрация пользователя
 def register_view(request):
     form = RegisterForm(request.POST or None)
+    if request.user.is_authenticated:
+        messages.error(request, 'Вы уже вошли в свой аккаунт')
+        return redirect('links:index')
     if request.method == 'POST' and form.is_valid():
         register_user_service(form=form)
         logger.info(f'Пользователь {form.cleaned_data["email"]} зарегистрировался, но еще не подтвердил аккаунт')
@@ -112,8 +114,11 @@ def logout_view(request):
 # Если пользователь забыл пароль или хочет сделать сброс пароля
 def confirm_email_for_reset_password_view(request):
     if request.user.is_authenticated:
-        send_password_reset_email(user=request.user)
-        messages.success(request, 'Ссылка для восстановления пароля отправлена на вашу почту')
+        if request.user.social_auth.filter(provider='google-oauth2').exists():
+            messages.error(request, 'Вы не можете сбросить пароль в своем аккаунте Google, попробуйте войти через Google')
+        else:
+            send_password_reset_email(user=request.user)
+            messages.success(request, 'Ссылка для восстановления пароля отправлена на вашу почту')
         return redirect('accounts:profile')
     
     form = ConfirmEmailForResetPasswordForm(request.POST or None)

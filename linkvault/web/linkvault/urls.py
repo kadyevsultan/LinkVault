@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include('links.urls')),
     path('accounts/', include('accounts.urls')),
     path('verify/', include(email_verification_urls)),
+    path('social-auth/', include('social_django.urls', namespace='social')),
 ]
 
 # Подключаем медиафайлы **только в режиме разработки**

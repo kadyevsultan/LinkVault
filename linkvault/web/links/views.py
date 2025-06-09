@@ -1,5 +1,4 @@
 import logging
-import uuid
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -7,13 +6,11 @@ from django.db import IntegrityError
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 
-from datetime import datetime
-
 from .forms import (
     LinkForm, EditLinkForm, 
     CategoryForm, AddLinksToCategoryForm, EditCategoryForm, AddSessionLinksToCategoryForm)
 
-from .utils import get_image_from_request, download_favicon, get_image_path_for_session
+from .utils import get_image_from_request
 
 from .services import actual_year
 from .services import (
@@ -23,10 +20,13 @@ from .services import (
     create_or_edit_category_from_form, create_or_edit_link_from_form, # Work with forms
 )
 
-from .session_services import SESSION_KEY_CATEGORIES, SESSION_KEY_LINKS
 from .session_services import (
-    get_last_session_categories, get_last_session_links, get_links_by_session, get_session_link_by_id,
-    add_link_to_session, delete_session_link,
+    get_last_session_links, get_links_by_session, get_session_link_by_id,
+    add_link_to_session, delete_session_link, edit_session_link,
+    get_last_session_categories, get_categories_by_session, get_session_category_by_id,
+    add_category_to_session, edit_session_category, get_session_links_by_category,
+    get_true_path_for_session_media, add_session_link_to_category, remove_session_link_from_category,
+    delete_session_category
 )
 
 logger = logging.getLogger(__name__)
@@ -34,10 +34,15 @@ logger = logging.getLogger(__name__)
 
 """ Главная страница """
 def index_view(request):
+    show_register_prompt = False
+    session_links = get_links_by_session(request)
+    if len(session_links) > 0 and not request.user.is_authenticated:
+        show_register_prompt = True
     context = {
         'title': 'LinkVault - Главная',
         'actual_year': actual_year,
-        'user': request.user
+        'user': request.user,
+        'show_register_prompt': show_register_prompt,
     }
     if request.user.is_authenticated:
         context.update({
@@ -72,11 +77,13 @@ def detail_link_view(request, link_id):
     if request.user.is_authenticated:
         link = get_link_by_id(link_id)
         if not link:
-            raise Http404("Закладка не найдена")
+            messages.error(request, 'Закладка не найдена')
+            return redirect('links:my-links')
     else:
         link = get_session_link_by_id(request, link_id)
         if not link:
-            raise Http404("Закладка не найдена")
+            messages.error(request, 'Закладка не найдена')
+            return redirect('links:my-links')
     context = {
         'title': f'LinkVault - {link["name"] if isinstance(link, dict) else link.name}',
         'link': link,
@@ -104,6 +111,9 @@ def add_link_view(request):
             # Если пользователь не авторизован, сохраняем в сессии
             try:
                 add_link_to_session(form=form, request=request)
+                session_links = get_links_by_session(request)
+                if len(session_links) == 1:
+                    messages.info(request, 'Вы можете создать аккаунт, чтобы сохранить закладки навсегда.')
                 messages.success(request, 'Ссылка успешно добавлена в ваш список')
                 return redirect('links:my-links')
             except IntegrityError:
@@ -151,8 +161,7 @@ def edit_link_view(request, link_id):
             messages.success(request, 'Ссылка успешно обновлена')
             return redirect('links:detail-link', link_id=link_id)
     else:
-        session_links = request.session.get(SESSION_KEY_LINKS, [])
-        link = next((l for l in session_links if l['id'] == link_id), None)
+        link = get_session_link_by_id(request, link_id)
         
         if not link:
             messages.error(request, 'Закладка не найдена')
@@ -160,10 +169,7 @@ def edit_link_view(request, link_id):
         if request.method == 'POST':
             form = EditLinkForm(request.POST)
             if form.is_valid():
-                link['name'] = form.cleaned_data['name']
-                link['link'] = form.cleaned_data['link']
-                link['description'] = form.cleaned_data['description']
-                request.session.modified = True
+                edit_session_link(form=form, request=request, link=link)
                 messages.success(request, 'Ссылка успешно обновлена')
                 return redirect('links:detail-link', link_id=link_id)
         else:
@@ -188,7 +194,7 @@ def my_categories_view(request):
             'categories': get_categories_by_user(request),
         })
     else:
-        session_categories = request.session.get(SESSION_KEY_CATEGORIES, [])
+        session_categories = get_categories_by_session(request)
         context.update({
             'categories': session_categories,
         })
@@ -213,29 +219,15 @@ def add_category_view(request):
                 messages.error(request, f'Произошла ошибка при добавлении категории')
                 return redirect('links:my-categories')
         else:
-            session_categories = request.session.get(SESSION_KEY_CATEGORIES, [])
+            session_categories = get_categories_by_session(request)
             new_category_name = form.cleaned_data['name']
-            
             if any(category['name'] == new_category_name for category in session_categories):
                 form.add_error("name", "Эта категория уже добавлена в ваш список.")
                 messages.error(request, 'Эта категория уже добавлена в ваш список.')
             else:
-                # Генерируем уникальный идентификатор
-                temp_id = str(uuid.uuid4())
-                session_id = request.session.session_key
-                
-                image = get_image_path_for_session(request=request) or 'defaults/category.png'
-                
-                new_category_data = {
-                    'id': temp_id,
-                    'name': new_category_name,
-                    'image': image,
-                    'session_id': session_id,
-                    'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                }
-                session_categories.append(new_category_data)
-                request.session[SESSION_KEY_CATEGORIES] = session_categories
-                request.session.set_expiry(0)
+                add_category_to_session(
+                    request=request, new_category_name=new_category_name, session_categories=session_categories
+                )
                 messages.success(request, 'Категория успешно добавлена в ваш список')
                 
             return redirect('links:my-categories')
@@ -266,8 +258,7 @@ def edit_category_view(request, category_id):
                 messages.error(request, f'Произошла ошибка при обновлении категории.')
                 return redirect('links:my-categories')
     else:
-        session_categories = request.session.get(SESSION_KEY_CATEGORIES, [])
-        category = next((category for category in session_categories if category['id'] == category_id), None)
+        category = get_session_category_by_id(request=request, category_id=category_id)
         
         if not category:
             messages.error(request, 'Категория не найдена')
@@ -275,9 +266,7 @@ def edit_category_view(request, category_id):
         if request.method == 'POST':
             form = EditCategoryForm(request.POST)
             if form.is_valid():
-                category['name'] = form.cleaned_data['name']
-                category['image'] = get_image_path_for_session(request=request)
-                request.session.modified = True
+                edit_session_category(form=form, request=request, category=category)
                 messages.success(request, 'Категория успешно обновлена')
                 return redirect('links:my-categories')
         else:
@@ -306,17 +295,11 @@ def links_by_category_view(request, category_id):
             'title': f'LinkVault - {category.name}',
         })
     else:
-        session_categories = request.session.get(SESSION_KEY_CATEGORIES, [])
-        category = next((category for category in session_categories if category['id'] == category_id), None)
+        category = get_session_category_by_id(request=request, category_id=category_id)
         
-        session_links = request.session.get(SESSION_KEY_LINKS, [])
-        category_links = [
-            link for link in session_links if 'categories' in link and category_id in link['categories']
-        ]
+        category_links = get_session_links_by_category(request=request, category_id=category_id)
         
-        for link in category_links:
-            if link.get('favicon_image') and not link['favicon_image'].startswith('/media/'):
-                link['favicon_image'] = f'/media/{link["favicon_image"]}'
+        get_true_path_for_session_media(category_links=category_links)
                 
         if not category:
             messages.error(request, 'Категория не найдена')
@@ -348,23 +331,14 @@ def add_links_to_category_view(request, category_id):
                 messages.error(request, f'Произошла ошибка при добавлении закладок в категорию')
             return redirect('links:links-by-category', category_id=category_id)
     else:
-        session_categories = request.session.get(SESSION_KEY_CATEGORIES, [])
-        category = next((category for category in session_categories if category['id'] == category_id), None)
+        category = get_session_category_by_id(request=request, category_id=category_id)
         if not category:
             messages.error(request, 'Категория не найдена')
             return redirect('links:my-categories')
         form = AddSessionLinksToCategoryForm(request.POST or None, category=category, request=request)
         
         if request.method == 'POST' and form.is_valid():
-            selected_links = form.cleaned_data['categories']
-            session_links = request.session.get(SESSION_KEY_LINKS, [])
-            for link in session_links:
-                if link['id'] in selected_links:
-                    if 'categories' not in link:
-                        link['categories'] = []
-                    if category_id not in link['categories']:
-                        link['categories'].append(category_id)
-            request.session[SESSION_KEY_LINKS] = session_links
+            add_session_link_to_category(request=request, form=form, category_id=category_id)
             messages.success(request, 'Закладки успешно добавлены в категорию')
             return redirect('links:links-by-category', category_id=category_id)
         
@@ -386,12 +360,8 @@ def delete_link_from_category_view(request, link_id, category_id):
         link.save()
         messages.success(request, 'Закладка успешно удалена из категории')
     else:
-        session_links = request.session.get(SESSION_KEY_LINKS, [])
-        for i, link in enumerate(session_links):
-            if link['id'] == link_id:
-                session_links[i]['categories'].remove(category_id)
-                break
-        request.session.modified = True
+        session_links = get_links_by_session(request=request)
+        remove_session_link_from_category(request=request, links=session_links, category_id=category_id, link_id=link_id)
         messages.success(request, 'Закладка успешно удалена из категории')
     return redirect('links:links-by-category', category_id=category_id)
 
@@ -407,12 +377,8 @@ def delete_category_view(request, category_id):
                 logger.error(f'Произошла ошибка при удалении категории: {e}')
                 messages.error(request, f'Произошла ошибка при удалении категории')
         else:
-            session_categories = request.session.get(SESSION_KEY_CATEGORIES, [])
-            for i, category in enumerate(session_categories):
-                if category['id'] == category_id:
-                    del session_categories[i]
-                    break
-            request.session.modified = True
+            session_categories = get_categories_by_session(request=request)
+            delete_session_category(request=request, category_id=category_id, categories=session_categories)
             messages.success(request, 'Категория успешно удалена')
     return redirect('links:my-categories')
 

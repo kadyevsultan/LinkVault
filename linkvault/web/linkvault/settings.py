@@ -30,9 +30,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3rd party
     'django_email_verification',
+    'social_django',
     # my apps
-    'accounts',
-    'links',
+    'accounts.apps.AccountsConfig',
+    'links.apps.LinksConfig',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +59,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'links.context_processors.show_exit_warning',
             ],
         },
     },
@@ -88,6 +90,8 @@ DATABASES = {
 
 AUTHENTICATION_BACKENDS = [
     'accounts.backends.EmailOrUsernameBackend',
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -108,9 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'ru-ru'
 
@@ -162,6 +163,7 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': 'logs/linkvault.log', # Путь к файлу для сохранения логов
             'formatter': 'verbose',
+            'encoding': 'utf-8',
         },
         'console': {
             'level': 'INFO',
@@ -170,23 +172,26 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django': { # Название приложения для логирования
+        'accounts': {  # пустая строка = корневой логгер (всё приложение)
             'handlers': ['file', 'console'],
             'level': 'INFO',
             'propagate': True,
         },
-        'users': {  # Название приложения для логирования
+        'links': {
             'handlers': ['file', 'console'],
             'level': 'INFO',
-            'propagate': False,
+            'propagate': True,
+        },
+        'django': { # Название приложения для логирования
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
         },
     },
 }
 
 
 """ Django Email Verification """
-
-# settings.py
 
 def email_verified_callback(user):
     user.is_active = True
@@ -229,3 +234,29 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'kadyevsultan521@gmail.com'
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
+
+
+
+""" Social Auth """
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+
+LOGIN_URL = '/auth/login/google-oauth2/'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+# Для связки аккаунта Google с аккаунтом в LinkVault
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',  # <- привязка
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
