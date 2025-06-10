@@ -308,7 +308,7 @@ def links_by_category_view(request, category_id):
         context.update({
             'links': category_links,
             'category': category,
-            'title': f'LinkVault - {category['name']}',
+            'title': f"LinkVault - {category['name']}",
         })
     return render(request, 'categories/links-by-category.html', context=context)
 

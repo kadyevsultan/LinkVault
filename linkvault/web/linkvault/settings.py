@@ -12,13 +12,11 @@ env.read_env(BASE_DIR / '.env')
 
 SECRET_KEY = env('SECRET_KEY')
 
-DEBUG = True
+# DEBUG = True 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1']
 
-# DEBUG = False
-
-# ALLOWED_HOSTS = ['localhost']
+DEBUG = False
 
 
 INSTALLED_APPS = [
@@ -69,23 +67,23 @@ WSGI_APPLICATION = 'linkvault.wsgi.application'
 
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env('POSTGRES_DB'),
-#         'USER': env('POSTGRES_USER'),
-#         'PASSWORD': env('POSTGRES_PASSWORD'),
-#         'HOST': env('POSTGRES_HOST'),
-#         'PORT': env('POSTGRES_PORT', default=5432),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('POSTGRES_DB'),
+        'USER': env('POSTGRES_USER'),
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+        'HOST': env('POSTGRES_HOST'),
+        'PORT': env('POSTGRES_PORT', default=5432),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 AUTHENTICATION_BACKENDS = [
@@ -203,7 +201,7 @@ def password_change_callback(user, password):
 
 # Global Package Settings
 EMAIL_FROM_ADDRESS = 'noreply@aliasaddress.com'  # mandatory
-EMAIL_PAGE_DOMAIN = 'http://127.0.0.1:8000/'  # mandatory (unless you use a custom link)
+EMAIL_PAGE_DOMAIN = env('EMAIL_PAGE_DOMAIN')  # mandatory (unless you use a custom link)
 EMAIL_MULTI_USER = False  # optional (defaults to False)
 
 # Email Verification Settings (mandatory for email sending)

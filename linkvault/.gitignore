@@ -1,0 +1,13 @@
+.env
+venv
+db.sqlite3
+
+# Игнорировать .pyc файлы и папки __pycache__
+__pycache__/
+*.pyc
+
+# Игнорировать все логи
+*.log
+
+category_images
+favicons
